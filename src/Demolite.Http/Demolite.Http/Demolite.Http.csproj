@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Demolite.Http</RootNamespace>
+        <PackageId>Demolite.Http</PackageId>
+        <Version>0.0.1</Version>
+        <Title>Demolite.Http</Title>
+        <Authors>Demolite</Authors>
+        <RepositoryUrl>https://github.com/d3molite/DemoliteHttp</RepositoryUrl>
+        <PackageTags>api, flurl, api wrapper, abstract api repository, repository, http requests</PackageTags>
+        <Description>A .NET8 Flurl and Serilog based easy to use Abstract Http Repository</Description>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\..\README.md" Pack="true" PackagePath="\"/>
+      <PackageReference Include="Flurl.Http" Version="4.0.2" />
+      <PackageReference Include="Serilog" Version="4.0.2" />
+    </ItemGroup>
+
+</Project>
