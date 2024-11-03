@@ -1,5 +1,6 @@
 ﻿using Demolite.Http.Interfaces;
 using Flurl.Http;
+using Polly;
 
 namespace Demolite.Http.Repository;
 
@@ -18,6 +19,12 @@ public abstract partial class AbstractHttpRepository<TPb>
 	///     Default request timeout in milliseconds.
 	/// </summary>
 	protected virtual int Timeout => 5000;
+	
+	/// <summary>
+	/// Default resilience pipeline builder.
+	/// Can be set null if not intended to be used.
+	/// </summary>
+	protected virtual IResiliencePipelineBuilder? ResiliencePipelineBuilder { get; }
 
 	/// <summary>
 	///     Setup method used to prepare the Flurl Client
