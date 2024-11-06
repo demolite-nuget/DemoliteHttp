@@ -25,17 +25,15 @@ public abstract partial class AbstractHttpRepository<TPb>
 	/// <param name="builder">Url builder.</param>
 	/// <param name="formContent">Possible get form content.</param>
 	/// <param name="defaultValue">Default return value.</param>
-	/// <param name="resiliencePipeline">Resilience pipeline</param>
 	/// <typeparam name="TR">Return value type.</typeparam>
 	/// <returns>A <see cref="IHttpResponse{T}" /> containing the deserialized return value, or default if there was an error</returns>
 	protected async Task<IHttpResponse<TR>> Get<TR>(
 		IUrlBuilder<TPb> builder,
-		ResiliencePipeline<IFlurlResponse>? resiliencePipeline = null,
 		TR? formContent = null,
 		TR? defaultValue = default
 	)
 		where TR : class
-		=> await SendRequestInternal(builder, RequestType.Get, formContent, defaultValue, resiliencePipeline);
+		=> await SendRequestInternal(builder, RequestType.Get, formContent, defaultValue);
 
 	/// <summary>
 	///     Executes a POST request.
@@ -43,15 +41,13 @@ public abstract partial class AbstractHttpRepository<TPb>
 	/// <param name="builder">Url builder.</param>
 	/// <param name="data">Data to be serialized and sent.</param>
 	/// <param name="defaultValue">Default return value.</param>
-	/// <param name="resiliencePipeline">Resilience pipeline</param>
 	/// <typeparam name="T">Transmit type.</typeparam>
 	/// <typeparam name="TR">Return type.</typeparam>
 	/// <returns></returns>
 	protected async Task<IHttpResponse<TR>> Post<T, TR>(
 		IUrlBuilder<TPb> builder, 
-		T? data, TR? defaultValue = default, 
-		ResiliencePipeline<IFlurlResponse>? resiliencePipeline = null)
-		=> await SendRequestInternal(builder, RequestType.Post, data, defaultValue, resiliencePipeline);
+		T? data, TR? defaultValue = default)
+		=> await SendRequestInternal(builder, RequestType.Post, data, defaultValue);
 
 	/// <summary>
 	///     Executes a PUT request.
@@ -59,16 +55,14 @@ public abstract partial class AbstractHttpRepository<TPb>
 	/// <param name="builder">Url builder.</param>
 	/// <param name="data">Data to be serialized and sent.</param>
 	/// <param name="defaultValue">Default return value.</param>
-	/// <param name="resiliencePipeline">Resilience pipeline</param>
 	/// <typeparam name="T">Transmit type.</typeparam>
 	/// <typeparam name="TR">Return type.</typeparam>
 	/// <returns></returns>
 	protected async Task<IHttpResponse<TR>> Put<T, TR>(
 		IUrlBuilder<TPb> builder,
 		T? data,
-		TR? defaultValue = default, 
-		ResiliencePipeline<IFlurlResponse>? resiliencePipeline = null)
-		=> await SendRequestInternal(builder, RequestType.Put, data, defaultValue, resiliencePipeline);
+		TR? defaultValue = default)
+		=> await SendRequestInternal(builder, RequestType.Put, data, defaultValue);
 
 	/// <summary>
 	///     Executes a PATCH request.
@@ -76,16 +70,14 @@ public abstract partial class AbstractHttpRepository<TPb>
 	/// <param name="builder">Url builder.</param>
 	/// <param name="data">Data to be serialized and sent.</param>
 	/// <param name="defaultValue">Default return value.</param>
-	/// <param name="resiliencePipeline">Resilience pipeline</param>
 	/// <typeparam name="T">Transmit type.</typeparam>
 	/// <typeparam name="TR">Return type.</typeparam>
 	/// <returns></returns>
 	protected async Task<IHttpResponse<TR>> Patch<T, TR>(
 		IUrlBuilder<TPb> builder, 
 		T? data, 
-		TR? defaultValue = default,
-		ResiliencePipeline<IFlurlResponse>? resiliencePipeline = null)
-		=> await SendRequestInternal(builder, RequestType.Patch, data, defaultValue, resiliencePipeline);
+		TR? defaultValue = default)
+		=> await SendRequestInternal(builder, RequestType.Patch, data, defaultValue);
 
 	/// <summary>
 	///     Method with actually sends the request to the endpoint.
@@ -94,7 +86,6 @@ public abstract partial class AbstractHttpRepository<TPb>
 	/// <param name="requestType"></param>
 	/// <param name="data"></param>
 	/// <param name="defaultValue"></param>
-	/// <param name="resiliencePipeline"></param>
 	/// <typeparam name="T"></typeparam>
 	/// <typeparam name="TR"></typeparam>
 	/// <returns></returns>
@@ -102,15 +93,14 @@ public abstract partial class AbstractHttpRepository<TPb>
 		IFlurlRequest request,
 		RequestType requestType,
 		T? data,
-		TR? defaultValue = default,
-		ResiliencePipeline<IFlurlResponse>? resiliencePipeline = null
+		TR? defaultValue = default
 	)
 	{
 		try
 		{
 			var jsonString = JsonSerializer.Serialize(data, GetOptions());
 			var jsonData = new StringContent(jsonString, Encoding.UTF8, "application/json");
-			var pipeline = resiliencePipeline ?? ResiliencePipeline<IFlurlResponse>.Empty;
+			var pipeline = GetPipeline(requestType);
 
 			var flurlResponse = await pipeline.ExecuteAsync(async token =>
 			{
@@ -142,8 +132,7 @@ public abstract partial class AbstractHttpRepository<TPb>
 		IUrlBuilder<TPb> builder,
 		RequestType requestType,
 		T? data,
-		TR? defaultValue = default,
-		ResiliencePipeline<IFlurlResponse>? resiliencePipeline = null
+		TR? defaultValue = default
 	)
 	{
 		await PrepareRequest();
@@ -176,6 +165,6 @@ public abstract partial class AbstractHttpRepository<TPb>
 				throw new ArgumentOutOfRangeException(nameof(requestType), requestType, null);
 		}
 
-		return await SendRequest(request, requestType, data, defaultValue, resiliencePipeline);
+		return await SendRequest(request, requestType, data, defaultValue);
 	}
 }

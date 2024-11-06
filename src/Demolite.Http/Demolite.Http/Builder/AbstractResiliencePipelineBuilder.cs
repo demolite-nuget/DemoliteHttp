@@ -21,30 +21,31 @@ public abstract class AbstractResiliencePipelineBuilder : IResiliencePipelineBui
     /// StatusCode Policy builder.
     /// Can be set null if not intended to be used.
     /// </summary>
-    protected abstract IHttpStatusCodePolicyBuilder IHttpStatusCodePolicyBuilder { get; }
+    protected abstract IHttpStatusCodePolicyBuilder HttpStatusCodePolicyBuilder { get; }
 
-    public virtual IResiliencePipelineBuilder ForGetRequests<TD>() where TD : class
-        => DefaultPipeline<IHttpResponse<TD>>();
+    public virtual IResiliencePipelineBuilder ForGetRequests()
+        => DefaultPipeline();
 
-    public virtual IResiliencePipelineBuilder ForPostRequests<TD>() where TD : class
-        => DefaultPipeline<TD>();
+    public virtual IResiliencePipelineBuilder ForPostRequests()
+        => DefaultPipeline();
 
-    public virtual IResiliencePipelineBuilder ForPutRequests<TD>() where TD : class
-        => DefaultPipeline<TD>();
+    public virtual IResiliencePipelineBuilder ForPutRequests()
+        => DefaultPipeline();
 
-    public virtual IResiliencePipelineBuilder ForDeleteRequests<TD>() where TD : class
-        => DefaultPipeline<TD>();
+    public virtual IResiliencePipelineBuilder ForDeleteRequests()
+        => DefaultPipeline();
 
-    public virtual IResiliencePipelineBuilder ForPatchRequests<TD>() where TD : class
-        => DefaultPipeline<TD>();
+    public virtual IResiliencePipelineBuilder ForPatchRequests() 
+        => DefaultPipeline();
+
 
     public ResiliencePipeline<IFlurlResponse> Build()
     {
         return _pipelineBuilder.Build();
     }
 
-    protected abstract IResiliencePipelineBuilder DefaultPipeline<TD>()
-        where TD : class;
+    protected abstract IResiliencePipelineBuilder DefaultPipeline();
+
 
     /// <summary>
     /// Adds a retry strategy to pipeline.
