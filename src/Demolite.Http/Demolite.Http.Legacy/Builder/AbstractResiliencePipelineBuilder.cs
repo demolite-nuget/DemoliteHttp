@@ -1,6 +1,6 @@
 ﻿using System.Net;
-using Demolite.Http.Common;
-using Demolite.Http.Interfaces;
+using Demolite.Http.Legacy.Common;
+using Demolite.Http.Legacy.Interfaces;
 using Flurl.Http;
 using Polly;
 using Polly.CircuitBreaker;
@@ -8,7 +8,7 @@ using Polly.Retry;
 using Polly.Timeout;
 using Serilog;
 
-namespace Demolite.Http.Builder;
+namespace Demolite.Http.Legacy.Builder;
 
 /// <summary>
 /// Abstract implementation of the IResiliencePipelineBuilder interface

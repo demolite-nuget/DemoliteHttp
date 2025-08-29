@@ -1,4 +1,4 @@
-﻿namespace Demolite.Http.Enum;
+﻿namespace Demolite.Http.Legacy.Enum;
 
 public enum RequestType
 {

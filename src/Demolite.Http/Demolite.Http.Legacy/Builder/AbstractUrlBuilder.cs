@@ -1,6 +1,6 @@
-﻿using Demolite.Http.Interfaces;
+﻿using Demolite.Http.Legacy.Interfaces;
 
-namespace Demolite.Http.Builder;
+namespace Demolite.Http.Legacy.Builder;
 
 /// <summary>
 ///     Abstract version of the UrlBuilder

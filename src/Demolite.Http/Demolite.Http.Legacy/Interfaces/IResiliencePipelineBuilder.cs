@@ -1,7 +1,7 @@
 ﻿using Flurl.Http;
 using Polly;
 
-namespace Demolite.Http.Interfaces;
+namespace Demolite.Http.Legacy.Interfaces;
 /// <summary>
 /// Interface for the base Resiliencepipelinebuilder
 /// </summary>

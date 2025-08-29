@@ -1,8 +1,8 @@
 ﻿using System.Net;
-using Demolite.Http.Common;
-using Demolite.Http.Interfaces;
+using Demolite.Http.Legacy.Common;
+using Demolite.Http.Legacy.Interfaces;
 
-namespace Demolite.Http.Builder;
+namespace Demolite.Http.Legacy.Builder;
 
 public abstract class AbstractHttpStatusCodePolicyBuilder : IHttpStatusCodePolicyBuilder
 {

@@ -1,10 +1,10 @@
 ﻿using System.Text.Json;
-using Demolite.Http.Interfaces;
-using Demolite.Http.Response;
+using Demolite.Http.Legacy.Interfaces;
+using Demolite.Http.Legacy.Response;
 using Flurl.Http;
 using Serilog;
 
-namespace Demolite.Http.Repository;
+namespace Demolite.Http.Legacy.Repository;
 
 public abstract partial class AbstractHttpRepository<TPb>
 {

@@ -1,7 +1,7 @@
 ﻿using System.Net;
-using Demolite.Http.Common;
+using Demolite.Http.Legacy.Common;
 
-namespace Demolite.Http.Interfaces;
+namespace Demolite.Http.Legacy.Interfaces;
 
 /// <summary>
 /// Interface for HttpStatusCodePolicy Builder

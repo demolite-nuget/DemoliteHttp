@@ -1,13 +1,13 @@
 ﻿using System.Text;
 using System.Text.Json;
-using Demolite.Http.Enum;
-using Demolite.Http.Interfaces;
-using Demolite.Http.Response;
+using Demolite.Http.Legacy.Enum;
+using Demolite.Http.Legacy.Interfaces;
+using Demolite.Http.Legacy.Response;
 using Flurl.Http;
 using Polly;
 using Serilog;
 
-namespace Demolite.Http.Repository;
+namespace Demolite.Http.Legacy.Repository;
 
 public abstract partial class AbstractHttpRepository<TPb>
 {

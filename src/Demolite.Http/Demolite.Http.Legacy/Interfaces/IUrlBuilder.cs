@@ -1,4 +1,4 @@
-﻿namespace Demolite.Http.Interfaces;
+﻿namespace Demolite.Http.Legacy.Interfaces;
 
 /// <summary>
 ///     Interface for the base URl Builder.

@@ -1,7 +1,7 @@
 ﻿using Flurl.Http;
 using Serilog;
 
-namespace Demolite.Http.Repository;
+namespace Demolite.Http.Legacy.Repository;
 
 public abstract partial class AbstractHttpRepository<TPb>
 {

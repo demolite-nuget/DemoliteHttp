@@ -1,4 +1,4 @@
-﻿namespace Demolite.Http.Common;
+﻿namespace Demolite.Http.Legacy.Common;
 
 /// <summary>
 /// HttpStatusCodePolicy

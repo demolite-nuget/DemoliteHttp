@@ -1,9 +1,9 @@
-﻿using Demolite.Http.Enum;
-using Demolite.Http.Interfaces;
+﻿using Demolite.Http.Legacy.Enum;
+using Demolite.Http.Legacy.Interfaces;
 using Flurl.Http;
 using Polly;
 
-namespace Demolite.Http.Repository;
+namespace Demolite.Http.Legacy.Repository;
 
 public abstract partial class AbstractHttpRepository<TPb>
 {

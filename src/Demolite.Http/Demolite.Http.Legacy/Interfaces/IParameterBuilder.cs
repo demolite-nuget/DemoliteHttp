@@ -1,4 +1,4 @@
-﻿namespace Demolite.Http.Interfaces;
+﻿namespace Demolite.Http.Legacy.Interfaces;
 
 public interface IParameterBuilder<TPb>
 	where TPb : class, IParameterBuilder<TPb>
