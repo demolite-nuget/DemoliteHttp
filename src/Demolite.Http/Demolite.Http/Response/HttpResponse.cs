@@ -1,72 +1,59 @@
-﻿using System.Net;
+using System.Net;
 using Demolite.Http.Interfaces;
-using Flurl.Http;
 
 namespace Demolite.Http.Response;
 
-public class HttpResponse<T> : IHttpResponse<T>
+public class HttpResponse : IHttpResponse
 {
-	/// <inheritdoc />
 	public HttpStatusCode StatusCode { get; set; }
 
-	/// <inheritdoc />
-	public string Content { get; set; } = string.Empty;
+	public string? ResponseBody { get; set; }
 
-	/// <inheritdoc />
-	public string ErrorContent { get; set; } = string.Empty;
-
-	/// <inheritdoc />
-	public T? Object { get; set; }
-
-	/// <inheritdoc />
 	public bool IsSuccess { get; set; }
 
-	public static async Task<HttpResponse<T>> Ok(IFlurlResponse response, T? deserialized)
-		=> new()
-		{
-			StatusCode = (HttpStatusCode)response.StatusCode,
-			Content = await response.GetStringAsync(),
-			Object = deserialized,
-			IsSuccess = true,
-		};
+	public string? ErrorContent { get; set; }
 
-	public static async Task<HttpResponse<T>> Error(IFlurlResponse response, T? defaultValue)
-		=> new()
-		{
-			StatusCode = (HttpStatusCode)response.StatusCode,
-			Content = await response.GetStringAsync(),
-			ErrorContent = await response.GetStringAsync(),
-			Object = defaultValue,
-			IsSuccess = false,
-		};
+	public Exception? Exception { get; set; }
 
-	public static HttpResponse<T> Exception<T>(Exception exception, string content, T? defaultValue)
-		=> new()
-		{
-			StatusCode = (HttpStatusCode)500,
-			ErrorContent = exception.ToString(),
-			Content = content,
-			Object = defaultValue,
-			IsSuccess = false,
-		};
-
-	public static HttpResponse<T> FromResult<TR>(IHttpResponse<TR> result, Func<TR, T?> func)
+	public static async Task<IHttpResponse> Parse(HttpResponseMessage response)
 	{
-		if (result.IsSuccess)
-			return new HttpResponse<T>
-			{
-				StatusCode = result.StatusCode,
-				Content = result.Content,
-				Object = result.Object != null ? func.Invoke(result.Object) : default,
-				IsSuccess = result.IsSuccess,
-			};
+		if (response.IsSuccessStatusCode)
+			return await Ok(response);
 
-		return new HttpResponse<T>
+		return await Error(response);
+	}
+
+	public static IHttpResponse Parse(Exception exception)
+		=> Error(exception);
+
+	private static async Task<IHttpResponse> Error(HttpResponseMessage response)
+	{
+		return new HttpResponse()
 		{
-			StatusCode = result.StatusCode,
-			ErrorContent = result.ErrorContent,
-			Content = result.Content,
-			IsSuccess = result.IsSuccess,
+			StatusCode = response.StatusCode,
+			IsSuccess = response.IsSuccessStatusCode,
+			ErrorContent = await response.Content.ReadAsStringAsync(),
+		};
+	}
+
+	private static HttpResponse Error(Exception exception)
+	{
+		return new HttpResponse()
+		{
+			StatusCode = HttpStatusCode.InternalServerError,
+			IsSuccess = false,
+			ErrorContent = exception.Message,
+			Exception = exception,
+		};
+	}
+
+	private static async Task<IHttpResponse> Ok(HttpResponseMessage response)
+	{
+		return new HttpResponse()
+		{
+			StatusCode = response.StatusCode,
+			IsSuccess = response.IsSuccessStatusCode,
+			ResponseBody = await response.Content.ReadAsStringAsync(),
 		};
 	}
 }

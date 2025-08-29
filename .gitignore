@@ -2,4 +2,11 @@
 **/bin/**
 **/.idea/**
 
+# Ignore user specific settings
 *DotSettings.user
+
+# Ignore nuke temp files
+**/.nuke/temp/**
+
+# Ignore push staging directory
+/push/
