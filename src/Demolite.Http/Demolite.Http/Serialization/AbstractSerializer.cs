@@ -5,7 +5,7 @@ namespace Demolite.Http.Serialization;
 
 public abstract class AbstractSerializer
 {
-	public virtual JsonSerializerOptions CreateSerializerOptions()
+	protected virtual JsonSerializerOptions CreateSerializerOptions()
 	{
 		return new JsonSerializerOptions()
 		{
