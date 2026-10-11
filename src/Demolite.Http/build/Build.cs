@@ -1,5 +1,4 @@
 using System.IO;
-using Demolite.Http.Config;
 using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
@@ -12,7 +11,7 @@ class Build : NukeBuild
 	///   - JetBrains Rider            https://nuke.build/rider
 	///   - Microsoft VisualStudio     https://nuke.build/visualstudio
 	///   - Microsoft VSCode           https://nuke.build/vscode
-	public static int Main() => Execute<Build>(x => x.Publish);
+	public static int Main() => Execute<Build>(x => x.Pack);
 
 	[Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
 	readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
@@ -22,17 +21,26 @@ class Build : NukeBuild
 	
 	static AbsolutePath ReleaseDirectory => RootDirectory / .. / .. / "release";
 	
-	static AbsolutePath PushDirectory => RootDirectory / .. / .. / "push";
-
 	Target Clean => t => t
 		.Before(Restore)
 		.Executes(() =>
 			{
-				Directory.Delete(PushDirectory, true);
-				Directory.CreateDirectory(PushDirectory);
-				return DotNetTasks.DotNetClean(s => s.SetProject(Solution));
+				DeleteDirectory(ReleaseDirectory);
+				Directory.CreateDirectory(ReleaseDirectory);
+
+				foreach (var project in Solution.AllProjects)
+				{
+					DeleteDirectory(project.Directory / "bin");
+					DeleteDirectory(project.Directory / "obj");
+				}
 			}
 		);
+
+	static void DeleteDirectory(AbsolutePath directory)
+	{
+		if (Directory.Exists(directory))
+			Directory.Delete(directory, true);
+	}
 
 	Target Restore => t => t
 		.DependsOn(Clean)
@@ -56,25 +64,9 @@ class Build : NukeBuild
 					=> s
 						.SetProject(Solution.Demolite_Http)
 						.SetConfiguration(Configuration)
-						.SetVersion(AppVersion.Version)
-						.SetOutputDirectory(PushDirectory)
+						.SetOutputDirectory(ReleaseDirectory)
 				);
 			}
 		);
 
-	Target Publish => t => t
-		.DependsOn(Pack)
-		.Executes(() =>
-			{
-				foreach (var package in Directory.GetFiles(PushDirectory, "*.nupkg"))
-				{
-					if (IsLocalBuild)
-					{
-						DotNetTasks.DotNetNuGetPush(s => s.SetTargetPath(package).SetSource("C:/NuGet"));
-						File.Copy(package, Path.Combine(ReleaseDirectory, Path.GetFileName(package)));
-					}
-					
-				}
-			}
-		);
 }

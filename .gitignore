@@ -1,12 +1,7 @@
-**/obj/**
 **/bin/**
+**/obj/**
+
 **/.idea/**
+**/.nuke/**
 
-# Ignore user specific settings
-*DotSettings.user
-
-# Ignore nuke temp files
-**/.nuke/temp/**
-
-# Ignore push staging directory
-/push/
+**/release/**

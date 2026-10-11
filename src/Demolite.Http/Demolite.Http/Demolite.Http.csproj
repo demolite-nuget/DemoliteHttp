@@ -1,20 +1,27 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>Demolite.Http</RootNamespace>
         <PackageId>Demolite.Http</PackageId>
+        <Version>0.2.0</Version>
         <Title>Demolite.Http</Title>
         <Authors>Demolite</Authors>
         <RepositoryUrl>https://github.com/d3molite/DemoliteHttp</RepositoryUrl>
-        <Description>A .NET easy to use Abstract Http Repository based on the HttpClient without any dependencies.</Description>
+        <PackageTags>http, httpclient, api, client, result</PackageTags>
+        <Description>A base class for typed api clients on top of HttpClient with Result types, pluggable authentication and dependency injection support.</Description>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
-    
+
     <ItemGroup>
-        <None Include="..\..\..\README.md" Pack="true" PackagePath="\"/>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.10"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.10"/>
+        <PackageReference Include="Demolite.Core" Version="0.2.0"/>
     </ItemGroup>
 
 </Project>
