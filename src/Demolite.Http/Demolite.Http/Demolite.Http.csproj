@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <RootNamespace>Demolite.Http</RootNamespace>
         <PackageId>Demolite.Http</PackageId>
-        <Version>0.2.0</Version>
+        <Version>0.2.1</Version>
         <Title>Demolite.Http</Title>
         <Authors>Demolite</Authors>
         <RepositoryUrl>https://github.com/d3molite/DemoliteHttp</RepositoryUrl>

@@ -87,6 +87,21 @@ public class RegistrationTests
 		Assert.AreEqual("Bearer counted", _handler.Requests[1].Authorization!.ToString());
 	}
 
+	[TestMethod]
+	public async Task AddHeader_SetsHeaderFromServices()
+	{
+		var services = new ServiceCollection();
+		services.AddSingleton(new ApiSettings("https://api.test/", "abc"));
+		services.AddApiClient<TestApiClient>("https://api.test/")
+			.AddHeader("X-Api-Key", sp => sp.GetRequiredService<ApiSettings>().Key)
+			.ConfigurePrimaryHttpMessageHandler(() => _handler);
+
+		await using var provider = services.BuildServiceProvider();
+		await provider.GetRequiredService<TestApiClient>().GetItemAsync("items/1", TestContext.CancellationToken);
+
+		Assert.AreEqual("abc", _handler.Requests[0].Headers.GetValues("X-Api-Key").Single());
+	}
+
 	private sealed record ApiSettings(string BaseUrl, string Key = "");
 
 	private sealed class CountingProvider : IAuthProvider

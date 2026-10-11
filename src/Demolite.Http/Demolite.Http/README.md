@@ -102,6 +102,7 @@ The package only uses `Microsoft.Extensions.Logging`. If your host uses Serilog 
 |---|---|
 | `AddStaticAuth(scheme, token)` | Api keys and tokens. The token is read on every request, so rotating credentials work. |
 | `AddBasicAuth(userName, password)` | Basic authentication. |
+| `AddHeader(name, value)` | Any other header, such as an api key header. The value is read on every request. |
 | `AddAuth<TProvider>()` | Your own provider, registered as a singleton. |
 | `AddAuth(factory)` | Your own provider, created by a factory. |
 

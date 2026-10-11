@@ -56,4 +56,16 @@ public static class HttpClientBuilderAuthExtensions
 		Func<IServiceProvider, string> userName,
 		Func<IServiceProvider, string> password)
 		=> builder.AddAuth(provider => new BasicAuthProvider(() => userName(provider), () => password(provider)));
+
+	/// <summary>
+	/// Sets a header on every request, for example an api key header. The value is read on every request.
+	/// </summary>
+	/// <param name="builder">The client builder.</param>
+	/// <param name="name">The header name.</param>
+	/// <param name="value">Returns the current header value.</param>
+	public static IHttpClientBuilder AddHeader(
+		this IHttpClientBuilder builder,
+		string name,
+		Func<IServiceProvider, string> value)
+		=> builder.AddHttpMessageHandler(provider => new HeaderHandler(name, () => value(provider)));
 }
